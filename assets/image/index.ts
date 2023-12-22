@@ -7,6 +7,10 @@ bbm: require('./bbm.png'),
 food:require('./food.png'),
 grafik:require('./grafik.png'),
 check:require('./ceklis.png'),
-uncheck:require('./uncheck.png')
+uncheck:require('./uncheck.png'),
+home:require('./home.png'),
+money:require('./money.png'),
+grafik:require('./grafikicon.png'),
+select:require('./select.png')
 }
 export default images;

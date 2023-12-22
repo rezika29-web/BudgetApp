@@ -10,24 +10,12 @@ import {
 import ImagePicker from 'react-native-image-crop-picker';
 import images from '../../assets/image';
 import {CheckBox} from '@rneui/themed';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TransactionModal = ({onClose}) => {
-  // return (
-  //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //     <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
-  //       <Text style={{color:'black'}}>Ini adalah konten modal</Text>
-  //       <TouchableOpacity onPress={onClose}>
-  //         <Text style={{color:'black'}}>Tutup Modal</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   </View>
-  // );
   const [judul, setJudul] = useState('');
   const [incomeChecked, setincomeChecked] = useState(false);
   const [expanseChecked, setexpanseChecked] = useState(false);
   const [AmountValue, setAmountValue] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
   const [imageSource, setImageSource] = useState(null);
 
   const selectImage = async () => {
@@ -67,8 +55,6 @@ const TransactionModal = ({onClose}) => {
               <Text style={styles.placeholderText}>Emoji</Text>
             )}
           </TouchableOpacity>
-
-          {/* Input Judul */}
           <TextInput
             style={styles.input}
             placeholder="Type Name..."
@@ -80,8 +66,6 @@ const TransactionModal = ({onClose}) => {
         <Text style={{fontSize: 20, color: 'black', fontWeight: 'bold'}}>
           Type
         </Text>
-
-        {/* Check Box Jenis Kelamin */}
         <View style={styles.checkboxContainer}>
           <CheckBox
             checkedIcon={<Image source={images.check} style={{ height: 20, width: 20 }} />}
@@ -110,8 +94,6 @@ const TransactionModal = ({onClose}) => {
           Limit{' '}
           <Text style={{fontSize: 15, fontWeight: '500'}}>(optional)</Text>
         </Text>
-
-        {/* Input Alamat */}
         <TextInput
           style={styles.inputAmount}
           value={'Rp.' + formatNumber(AmountValue)}
@@ -181,9 +163,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 8,
-  },
-  label: {
-    marginLeft: 8,
-  },
+  }
 });
 export default TransactionModal;

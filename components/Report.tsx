@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet} from 'react-native';
 import images from '../assets/image';
+import Chart from './elements/chart';
 const Report = () => {
   // @ts-ignore
   return (
@@ -9,16 +10,16 @@ const Report = () => {
         <View style={styles.title}>
           <Text style={styles.textUser}>Monthly Report</Text>
         </View>
-        <View
+        {/* <View
           style={{
             alignContent: 'center',
             alignItems: 'center',
             height: 300,
           }}>
-          <Image source={images.grafik} style={{width: 285, height: 280}} />
-        </View>
+        </View> */}
+        <Chart />
         <Text style={styles.textControlWeekly}> Spending of the month</Text>
-        <View style={{ marginHorizontal: 20}}>
+        <View style={{marginHorizontal: 20}}>
           <View style={styles.itemContainer}>
             <Image source={images.signal} style={styles.itemImage} />
             <View style={styles.itemTextContainer}>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10
+    marginBottom: 10,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -101,7 +102,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'red',
     fontWeight: 'bold',
-
   },
 });
 

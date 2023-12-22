@@ -8,8 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
-// import Router from './elements/Router';
-import images from '../assets/image';
 import axios from 'axios';
 const Home = () => {
   const [category, setCategory] = useState([]);
@@ -17,45 +15,45 @@ const Home = () => {
   const [listTransaction, setListTransaction] = useState([]);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   useEffect(() => {
+    const fetchDataCategory = async () => {
+      try {
+        const response = await axios.get(
+          'https://my-json-server.typicode.com/rezika29-web/apiBudgetApp/budgetcontrol',
+        );
+        setCategory(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     fetchDataCategory();
   }, []);
   useEffect(() => {
+    const fetchDataTransaction = async () => {
+      try {
+        const response = await axios.get(
+          'https://my-json-server.typicode.com/rezika29-web/apiBudgetApp/category',
+        );
+        setTransaction(response.data);
+        console.log(setTransaction)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     fetchDataTransaction();
   }, []);
   useEffect(() => {
+    const fetchDataListTransaction = async () => {
+      try {
+        const response = await axios.get(
+          'https://my-json-server.typicode.com/rezika29-web/apiBudgetApp/transaction',
+        );
+        setListTransaction(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     fetchDataListTransaction();
   }, []);
-  const fetchDataCategory = async () => {
-    try {
-      const response = await axios.get(
-        'https://my-json-server.typicode.com/rezika29-web/apiBudgetApp/budgetcontrol',
-      );
-      setCategory(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  const fetchDataTransaction = async () => {
-    try {
-      const response = await axios.get(
-        'https://my-json-server.typicode.com/rezika29-web/apiBudgetApp/category',
-      );
-      setTransaction(response.data);
-      console.log(setTransaction)
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  const fetchDataListTransaction = async () => {
-    try {
-      const response = await axios.get(
-        'https://my-json-server.typicode.com/rezika29-web/apiBudgetApp/transaction',
-      );
-      setListTransaction(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
   const handleTabChange = index => {
     setActiveTabIndex(index);
   };
@@ -63,19 +61,10 @@ const Home = () => {
   const renderContent = () => {
     if (activeTabIndex === 0) {
       return renderList(listTransaction);
-    } 
-    // else if (activeTabIndex === 3) {
-    //   return renderList(internet);
-    // } else if (activeTabIndex === 2) {
-    //   return renderList(royalti);
-    // } 
-    // else {
-    //   // Jika tab aktif adalah 'Semua'
-    //   return renderList([...food, ...internet, ...royalti]);
-    // }
-    else {
+    } else {
       // Jika tab aktif adalah 'Semua'
       return renderList(listTransaction);
+      // return renderList(activeTabIndex);
     }
   };
 
@@ -85,64 +74,16 @@ const Home = () => {
         {list.map((item, index) => (
           <View key={index} style={styles.itemContainer}>
             <Image source={{uri: item.image}} style={styles.itemImage} />
-            {/* <Image style={styles.itemImage} /> */}
             <View style={styles.itemTextContainer}>
               <Text style={styles.itemDate}>{item.date}</Text>
               <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemDescription}>Rp. {item.amount}</Text>
+              <Text style={styles.itemAmount}>Rp. {item.amount}</Text>
             </View>
           </View>
         ))}
       </ScrollView>
     );
   };
-
-  const food = [
-    {
-      name: 'Food',
-      description: '-50.000',
-      date: 'Sat, 08 July 2020',
-      image: images.signal,
-    },
-    {
-      name: 'Banana',
-      description: '-40.000',
-      date: 'Sat, 08 July 2020',
-      image: images.signal,
-    },
-    // Add more fruits with image and description
-  ];
-
-  const royalti = [
-    {
-      name: 'Royalti',
-      description: '+50.000',
-      date: 'Sat, 08 July 2020',
-      image: images.signal,
-    },
-    {
-      name: 'Royalti',
-      description: '+50.000',
-      date: 'Sat, 08 July 2020',
-      image: images.signal,
-    },
-    // Add more animals with image and description
-  ];
-  const internet = [
-    {
-      name: 'Internet',
-      description: '-50.000',
-      date: 'Sat, 08 July 2020',
-      image: images.signal,
-    },
-    {
-      name: 'Internet',
-      description: '-50.000',
-      date: 'Sat, 08 July 2020',
-      image: images.signal,
-    },
-    // Add more animals with image and description
-  ];
   // @ts-ignore
   return (
     <>
@@ -220,7 +161,6 @@ const Home = () => {
           <View style={{marginHorizontal: 10}}>{renderContent()}</View>
         </View>
       </View>
-      {/* <Router /> */}
     </>
   );
 };
@@ -230,7 +170,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#e8e8e8',
   },
   title: {
-    // backgroundColor:'yellow',
     marginLeft: 20,
     marginBottom: 20,
     marginTop: 10,
@@ -338,12 +277,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 50,
   },
-  contentText: {
-    fontSize: 16,
-    marginBottom: 10,
-    color: 'black',
-  },
-
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -376,7 +309,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: 'black',
   },
-  itemDescription: {
+  itemAmount: {
     fontSize: 14,
     color: 'red',
   },

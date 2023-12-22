@@ -5,35 +5,56 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 
 const Login = () => {
+  const [username, onChangeUsername] = React.useState('');
+  const [password, onChangePassword] = React.useState('');
   const Navigation = useNavigation();
   const handleNavigationRegister = () => {
     // @ts-ignore //ini perlu agak tidak ada garis merah
     Navigation.navigate('Register');
   };
-  const handleNavigationHome = () => {
-    // @ts-ignore
-    Navigation.navigate('Router');
+  const handleNavigationHome = async () => {
+    try {
+      const response = await axios.post(
+        'https://zq9gnjcq-8080.asse.devtunnels.ms/api/auth/signin',
+        {
+          username,
+          password,
+        },
+      );
+
+      // Handle response (e.g., store user token, navigate to home screen)
+      console.log(response.data);
+      Navigation.navigate('Router');
+
+      // Simpan token atau lakukan tindakan lain sesuai kebutuhan aplikasi
+    } catch (error) {
+      // Handle error (e.g., show error message)
+      console.error('Login failed', error.message);
+      Alert.alert('Login Failed', 'Please check your username and password.');
+    }
   };
-  const [email, onChangeEmail] = React.useState('');
-  const [password, onChangePassword] = React.useState('');
+
   return (
     <View style={styles.constainer}>
       <View style={styles.forms}>
         <Text style={styles.title}>Welcome Back!</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeEmail}
-          value={email}
-          placeholder="Email"
+          onChangeText={onChangeUsername}
+          value={username}
+          placeholder="Username"
           placeholderTextColor={'black'}
         />
         <TextInput
           style={styles.input}
           onChangeText={onChangePassword}
+          secureTextEntry
           value={password}
           placeholder="Password"
           placeholderTextColor={'black'}

@@ -5,26 +5,50 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 
 const Register = () => {
+  const [username, onChangeUsername] = React.useState('');
+  const [email, onChangeEmail] = React.useState('');
+  const [password, onChangePassword] = React.useState('');
+
   const Navigation = useNavigation();
   const handleNavigationLogin = () => {
     // @ts-ignore //ini perlu agak tidak ada garis merah
     Navigation.navigate('Login');
   };
-  const [name, onChangeName] = React.useState('');
-  const [email, onChangeEmail] = React.useState('');
-  const [password, onChangePassword] = React.useState('');
+  const handleNavigationRegister = async () => {
+    const roles = ['user'];
+    try {
+      const response = await axios.post(
+        'https://zq9gnjcq-8080.asse.devtunnels.ms/api/auth/signup',
+        {
+          username,
+          email,
+          password,
+          roles,
+        },
+      );
+      console.log(response.data);
+      Alert.alert('Registration Successful', 'You can now login.');
+      Navigation.navigate('Login');
+    } catch (error) {
+      console.error('Registration failed', error.message);
+      Alert.alert('Registration Failed', 'Please try again.');
+    }
+  };
+
   return (
     <View style={styles.constainer}>
       <View style={styles.forms}>
         <Text style={styles.title}>Track your finance now!</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeName}
-          value={name}
+          onChangeText={onChangeUsername}
+          value={username}
           placeholder="Name"
           placeholderTextColor={'black'}
         />
@@ -42,7 +66,9 @@ const Register = () => {
           placeholder="Password"
           placeholderTextColor={'black'}
         />
-        <TouchableOpacity style={styles.registerbutton}>
+        <TouchableOpacity
+          style={styles.registerbutton}
+          onPress={handleNavigationRegister}>
           <Text style={styles.registertext}>Register</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.google}>

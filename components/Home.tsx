@@ -9,11 +9,31 @@ import {
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Home = () => {
   const [category, setCategory] = useState([]);
   const [transaction, setTransaction] = useState([]);
   const [listTransaction, setListTransaction] = useState([]);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [username, setUsername] = useState('');
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem('username');
+        if (storedUsername) {
+          const formattedUsername = capitalizeEveryWord(storedUsername);
+          setUsername(formattedUsername);
+        }
+      } catch (error) {
+        console.error('Error getting user data', error);
+      }
+    };
+    // Mengambil data pengguna dari penyimpanan lokal saat komponen dipasang
+    getUserData();
+  }, []);
+  const capitalizeEveryWord = (str) => {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
   useEffect(() => {
     const fetchDataCategory = async () => {
       try {
@@ -89,7 +109,7 @@ const Home = () => {
     <>
       <View style={styles.container}>
         <View style={styles.title}>
-          <Text style={styles.textUser}>Hai, Septiandri</Text>
+          <Text style={styles.textUser}>Hai, {username}</Text>
           <Text style={styles.textDesc}>
             Control your expance, control your life
           </Text>

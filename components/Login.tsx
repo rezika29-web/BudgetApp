@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const [username, onChangeUsername] = React.useState('');
@@ -27,11 +28,10 @@ const Login = () => {
           password,
         },
       );
-
-      // Handle response (e.g., store user token, navigate to home screen)
       console.log(response.data);
+      await AsyncStorage.setItem('username', response.data.username);
+      await AsyncStorage.setItem('userId', response.data.userId.toString());
       Navigation.navigate('Router');
-
       // Simpan token atau lakukan tindakan lain sesuai kebutuhan aplikasi
     } catch (error) {
       // Handle error (e.g., show error message)
